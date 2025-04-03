@@ -38,7 +38,7 @@ public class ReportRestController {
                 .orElseThrow(() -> new UserNotFoundException("User with id %s not found".formatted(userId)));
 
         List<Meal> dailyUserMeals =
-                mealRepository.findAllByUserIdAndCreatedTimeAfterOrEqualTo(userId, Timestamp.valueOf(startOfDayInZone.toLocalDateTime()));
+                mealRepository.findAllByUserIdAndCreatedGreaterThanEqual(userId, Timestamp.valueOf(startOfDayInZone.toLocalDateTime()));
 
         Integer calories = dailyUserMeals.stream()
                 .flatMap(meal -> meal.getDishes().stream())
@@ -61,7 +61,7 @@ public class ReportRestController {
                 .orElseThrow(() -> new UserNotFoundException("User with id %s not found".formatted(userId)));
 
         List<Meal> dailyUserMeals =
-                mealRepository.findAllByUserIdAndCreatedTimeAfterOrEqualTo(userId, Timestamp.valueOf(startOfDayInZone.toLocalDateTime()));
+                mealRepository.findAllByUserIdAndCreatedGreaterThanEqual(userId, Timestamp.valueOf(startOfDayInZone.toLocalDateTime()));
 
         Integer calories = dailyUserMeals.stream()
                 .flatMap(meal -> meal.getDishes().stream())
