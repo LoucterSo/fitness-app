@@ -12,5 +12,6 @@ import java.util.List;
 public interface MealRepository extends JpaRepository<Meal, Long> {
     @EntityGraph(attributePaths = "dishes")
     List<Meal> findAllByUserIdAndCreatedGreaterThanEqual(Long userId, Timestamp created);
-
+    @EntityGraph(attributePaths = "dishes")
+    List<Meal> findAllByUserId(Long userId);
 }
