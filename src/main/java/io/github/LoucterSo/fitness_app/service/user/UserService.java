@@ -6,4 +6,5 @@ import io.github.LoucterSo.fitness_app.form.user.UserDto;
 public interface UserService {
     UserDto createUser(UserDto user);
     User findById(Long userId);
+    boolean existsById(Long userId);
 }

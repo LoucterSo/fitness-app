@@ -30,6 +30,10 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new UserNotFoundException("User with id %s not found".formatted(userId)));
     }
 
+    @Override
+    public boolean existsById(Long userId) {
+        return userRepository.existsById(userId);
+    }
 
 
 }
