@@ -12,7 +12,7 @@
 	<artifactId>fitness-app</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>fitness-app</name>
-	<description>Demo project for Spring Boot</description>
+	<description>A calorie-tracking web app with meal analysis</description>
 
 	<properties>
 		<java.version>17</java.version>
