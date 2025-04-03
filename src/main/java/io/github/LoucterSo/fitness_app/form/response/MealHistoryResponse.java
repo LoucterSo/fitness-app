@@ -1,6 +1,5 @@
 package io.github.LoucterSo.fitness_app.form.response;
 
-import io.github.LoucterSo.fitness_app.entity.meal.Meal;
 import io.github.LoucterSo.fitness_app.form.meal.MealDto;
 
 import java.time.LocalDate;

@@ -5,8 +5,8 @@ import io.github.LoucterSo.fitness_app.entity.meal.Meal;
 import io.github.LoucterSo.fitness_app.entity.user.User;
 import io.github.LoucterSo.fitness_app.exception.user.UserNotFoundException;
 import io.github.LoucterSo.fitness_app.form.meal.MealDto;
-import io.github.LoucterSo.fitness_app.form.response.DailyReportResponse;
-import io.github.LoucterSo.fitness_app.form.response.DailyReportResponse2;
+import io.github.LoucterSo.fitness_app.form.response.DailySummaryReportResponse;
+import io.github.LoucterSo.fitness_app.form.response.DailyAnalysisReportResponse;
 import io.github.LoucterSo.fitness_app.repository.meal.MealRepository;
 import io.github.LoucterSo.fitness_app.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +30,7 @@ public class ReportRestController {
     @GetMapping("/daily/summary/{userId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public DailyReportResponse getDailySummary(@PathVariable Long userId) {
+    public DailySummaryReportResponse getDailySummary(@PathVariable Long userId) {
         ZonedDateTime nowInZone = ZonedDateTime.now(ZoneId.of("Europe/Moscow"));
         ZonedDateTime startOfDayInZone = nowInZone.toLocalDate().atStartOfDay(ZoneId.of("Europe/Moscow"));
 
@@ -47,13 +47,13 @@ public class ReportRestController {
 
         Integer mealCount = dailyUserMeals.size();
 
-        return new DailyReportResponse(calories, mealCount);
+        return new DailySummaryReportResponse(calories, mealCount);
     }
 
     @GetMapping("/daily/analysis/{userId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public DailyReportResponse2 getDailyAnalysis(@PathVariable Long userId) {
+    public DailyAnalysisReportResponse getDailyAnalysis(@PathVariable Long userId) {
         ZonedDateTime nowInZone = ZonedDateTime.now(ZoneId.of("Europe/Moscow"));
         ZonedDateTime startOfDayInZone = nowInZone.toLocalDate().atStartOfDay(ZoneId.of("Europe/Moscow"));
 
@@ -68,7 +68,7 @@ public class ReportRestController {
                 .mapToInt(Dish::getCaloriesPerServing)
                 .sum();
 
-        return new DailyReportResponse2(calories, user.getDailyCalorieNorm(), calories > user.getDailyCalorieNorm());
+        return new DailyAnalysisReportResponse(calories, user.getDailyCalorieNorm(), calories > user.getDailyCalorieNorm());
     }
 
     @GetMapping("/history/{userId}")

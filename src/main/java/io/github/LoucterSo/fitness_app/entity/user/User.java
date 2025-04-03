@@ -1,7 +1,6 @@
 package io.github.LoucterSo.fitness_app.entity.user;
 
 import io.github.LoucterSo.fitness_app.Util;
-import io.github.LoucterSo.fitness_app.entity.dish.Dish;
 import io.github.LoucterSo.fitness_app.entity.meal.Meal;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
