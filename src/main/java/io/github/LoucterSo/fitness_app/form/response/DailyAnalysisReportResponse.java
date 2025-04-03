@@ -5,6 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public record DailyAnalysisReportResponse(
         @JsonProperty("daily_calorie_sum") Integer dailyCalorieSum,
         @JsonProperty("daily_calorie_norm") Integer dailyСalorieNorm,
-        @JsonProperty("exceeded") Boolean isExceeded
+        @JsonProperty("exceeded") boolean exceeded
 )
 { }
