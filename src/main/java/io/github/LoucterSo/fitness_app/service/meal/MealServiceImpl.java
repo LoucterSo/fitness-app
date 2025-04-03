@@ -37,7 +37,6 @@ public class MealServiceImpl implements MealService {
         Meal newMeal = new Meal();
         newMeal.setName(mealDto.name());
         newMeal.setUser(foundUser);
-
         List<Dish> dishes = prepareDishesForMeal(newMeal, mealDto.dishes());
         dishes.forEach(dishService::saveDish);
         newMeal.setDishes(dishes);

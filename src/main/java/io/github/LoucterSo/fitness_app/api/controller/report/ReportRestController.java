@@ -9,6 +9,7 @@ import io.github.LoucterSo.fitness_app.form.response.DailySummaryReportResponse;
 import io.github.LoucterSo.fitness_app.form.response.DailyAnalysisReportResponse;
 import io.github.LoucterSo.fitness_app.repository.meal.MealRepository;
 import io.github.LoucterSo.fitness_app.repository.user.UserRepository;
+import io.github.LoucterSo.fitness_app.service.report.ReportService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -23,71 +24,30 @@ import java.util.stream.Collectors;
 @RequestMapping("/report")
 @RequiredArgsConstructor
 public class ReportRestController {
-
-    private final MealRepository mealRepository;
-    private final UserRepository userRepository;
+    private final ReportService reportService;
 
     @GetMapping("/daily/summary/{userId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public DailySummaryReportResponse getDailySummary(@PathVariable Long userId) {
-        ZonedDateTime nowInZone = ZonedDateTime.now(ZoneId.of("Europe/Moscow"));
-        ZonedDateTime startOfDayInZone = nowInZone.toLocalDate().atStartOfDay(ZoneId.of("Europe/Moscow"));
 
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException("User with id %s not found".formatted(userId)));
-
-        List<Meal> dailyUserMeals =
-                mealRepository.findAllByUserIdAndCreatedGreaterThanEqual(userId, Timestamp.valueOf(startOfDayInZone.toLocalDateTime()));
-
-        Integer calories = dailyUserMeals.stream()
-                .flatMap(meal -> meal.getDishes().stream())
-                .mapToInt(Dish::getCaloriesPerServing)
-                .sum();
-
-        Integer mealCount = dailyUserMeals.size();
-
-        return new DailySummaryReportResponse(calories, mealCount);
+        return reportService.createDailySummaryReport(userId);
     }
 
     @GetMapping("/daily/analysis/{userId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public DailyAnalysisReportResponse getDailyAnalysis(@PathVariable Long userId) {
-        ZonedDateTime nowInZone = ZonedDateTime.now(ZoneId.of("Europe/Moscow"));
-        ZonedDateTime startOfDayInZone = nowInZone.toLocalDate().atStartOfDay(ZoneId.of("Europe/Moscow"));
 
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException("User with id %s not found".formatted(userId)));
-
-        List<Meal> dailyUserMeals =
-                mealRepository.findAllByUserIdAndCreatedGreaterThanEqual(userId, Timestamp.valueOf(startOfDayInZone.toLocalDateTime()));
-
-        Integer calories = dailyUserMeals.stream()
-                .flatMap(meal -> meal.getDishes().stream())
-                .mapToInt(Dish::getCaloriesPerServing)
-                .sum();
-
-        return new DailyAnalysisReportResponse(calories, user.getDailyCalorieNorm(), calories > user.getDailyCalorieNorm());
+        return reportService.createDailyAnalysisReport(userId);
     }
 
     @GetMapping("/history/{userId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public Map<LocalDate, List<MealDto>> getMealHistory(@PathVariable Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException("User with id %s not found".formatted(userId)));
 
-        List<MealDto> allUserMeals = user.getMeals().stream()
-                .map(MealDto::fromEntity)
-                .toList();
-
-        return allUserMeals.stream()
-                .collect(Collectors.groupingBy(m -> {
-                    Timestamp timestamp = m.created();
-                    LocalDateTime l = timestamp.toLocalDateTime();
-                    return LocalDate.of(l.getYear(), l.getMonth(), l.getDayOfMonth());
-                }));
+        return reportService.createMealHistoryReport(userId);
     }
 
 }
