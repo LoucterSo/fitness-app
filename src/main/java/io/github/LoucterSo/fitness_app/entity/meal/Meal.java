@@ -31,7 +31,12 @@ public class Meal {
     @ManyToOne
     private User user;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "meal")
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "meal_dish",
+            joinColumns = @JoinColumn(name = "meal_id"),
+            inverseJoinColumns = @JoinColumn(name = "dish_id")
+    )
     private List<Dish> dishes = new ArrayList<>();
 
     @Setter(AccessLevel.NONE)

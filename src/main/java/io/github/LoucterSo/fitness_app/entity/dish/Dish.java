@@ -7,6 +7,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "dish")
 @Getter @Setter
@@ -17,9 +20,8 @@ public class Dish {
     @Column(name = "dish_id")
     private Long id;
 
-    @JoinColumn(name = "meal_id")
-    @ManyToOne
-    private Meal meal;
+    @ManyToMany(mappedBy = "dishes")
+    private List<Meal> meals = new ArrayList<>();
 
     @Column(nullable = false)
     private String name;
@@ -37,6 +39,10 @@ public class Dish {
 
     @Column(nullable = false)
     private Integer carbs;
+
+    public void addMeal(Meal meal) {
+        meals.add(meal);
+    }
 
     public Integer getCaloriesPerServing() {
         return proteins * 4 + fats * 9 + carbs * 4;
