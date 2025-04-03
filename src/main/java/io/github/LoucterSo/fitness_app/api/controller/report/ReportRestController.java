@@ -1,4 +1,4 @@
-package io.github.LoucterSo.fitness_app.api.controller;
+package io.github.LoucterSo.fitness_app.api.controller.report;
 
 import io.github.LoucterSo.fitness_app.entity.dish.Dish;
 import io.github.LoucterSo.fitness_app.entity.meal.Meal;
@@ -20,16 +20,17 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
+@RequestMapping("/report")
 @RequiredArgsConstructor
-public class FitnessRestController {
+public class ReportRestController {
 
     private final MealRepository mealRepository;
     private final UserRepository userRepository;
 
-    @GetMapping("/daily-report/{userId}")
+    @GetMapping("/daily/summary/{userId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public DailyReportResponse getDailyReport(@PathVariable Long userId) {
+    public DailyReportResponse getDailySummary(@PathVariable Long userId) {
         ZonedDateTime nowInZone = ZonedDateTime.now(ZoneId.of("Europe/Moscow"));
         ZonedDateTime startOfDayInZone = nowInZone.toLocalDate().atStartOfDay(ZoneId.of("Europe/Moscow"));
 
@@ -49,10 +50,10 @@ public class FitnessRestController {
         return new DailyReportResponse(calories, mealCount);
     }
 
-    @GetMapping("/daily-report2/{userId}")
+    @GetMapping("/daily/analysis/{userId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public DailyReportResponse2 getDailyReport2(@PathVariable Long userId) {
+    public DailyReportResponse2 getDailyAnalysis(@PathVariable Long userId) {
         ZonedDateTime nowInZone = ZonedDateTime.now(ZoneId.of("Europe/Moscow"));
         ZonedDateTime startOfDayInZone = nowInZone.toLocalDate().atStartOfDay(ZoneId.of("Europe/Moscow"));
 
@@ -70,7 +71,7 @@ public class FitnessRestController {
         return new DailyReportResponse2(calories, user.getDailyCalorieNorm(), calories > user.getDailyCalorieNorm());
     }
 
-    @GetMapping("/meal-history/{userId}")
+    @GetMapping("/history/{userId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public Map<LocalDate, List<MealDto>> getMealHistory(@PathVariable Long userId) {
