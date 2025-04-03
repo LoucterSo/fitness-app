@@ -14,8 +14,11 @@ public class GlobalExceptionHandler {
 
     @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler
-    public ErrorResponse handleUserNotFoundException(UserNotFoundException ex) {
+    @ExceptionHandler(exception = {
+            UserNotFoundException.class,
+            UserNotFoundException.class
+    })
+    public ErrorResponse handleUserNotFoundException(Exception ex) {
 
         return new ErrorResponse(ex.getMessage(), System.currentTimeMillis());
     }
