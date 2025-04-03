@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: fitness-app
+  main:
+    banner-mode: 'off'
+    log-startup-info: false
+  jpa:
+    properties:
+      hibernate:
+        format-sql: 'false'
+    hibernate:
+      ddl-auto: update
+  datasource:
+    url: jdbc:postgresql://localhost:5432/backend
+#  liquibase:
+#    default-schema: public
+#    enabled: true
+#    change-log: classpath:/db/changelog/db.changelog-master.json
+
+hibernate:
+  format_sql: 'false'
+  show_sql: 'false'
+
+server:
+  servlet:
+    context-path: /api/v1
+  port: '8080'
