@@ -1,10 +1,16 @@
 package io.github.LoucterSo.fitness_app.entity.user;
 
 import io.github.LoucterSo.fitness_app.Util;
+import io.github.LoucterSo.fitness_app.entity.dish.Dish;
+import io.github.LoucterSo.fitness_app.entity.meal.Meal;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -26,10 +32,13 @@ public class User {
     private Integer age;
 
     @Column(name = "weight_in_cm", nullable = false)
-    private Double weightInCm;
+    private Double weightInKg;
 
     @Column(name = "height_in_cm", nullable = false)
     private Double heightInCm;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
+    private List<Meal> meals = new ArrayList<>();
 
     @Enumerated(value = EnumType.STRING)
     @Column(nullable = false)
@@ -40,7 +49,16 @@ public class User {
     private Goal goal;
 
     @Transient
-    private Integer dailyCalorieNorm = Util.calculateDailyCalorieIntake(this);
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
+    private Integer dailyCalorieNorm;
+
+    public Integer getDailyCalorieNorm() {
+        if (dailyCalorieNorm == null) {
+            dailyCalorieNorm = Util.calculateDailyCalorieIntake(this);
+        }
+        return dailyCalorieNorm;
+    }
 
     public boolean isMan() {
         return sex.equals(Sex.MAN);

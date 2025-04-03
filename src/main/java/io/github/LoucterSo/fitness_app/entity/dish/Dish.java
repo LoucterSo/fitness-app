@@ -2,9 +2,11 @@ package io.github.LoucterSo.fitness_app.entity.dish;
 
 import io.github.LoucterSo.fitness_app.entity.meal.Meal;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Formula;
 
 @Entity
 @Table(name = "dish")
@@ -23,7 +25,9 @@ public class Dish {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
+    @Setter(AccessLevel.NONE)
+    @Getter(AccessLevel.NONE)
     private Integer caloriesPerServing;
 
     @Column(nullable = false)
@@ -35,4 +39,13 @@ public class Dish {
     @Column(nullable = false)
     private Integer carbs;
 
+    public Integer getCaloriesPerServing() {
+        return proteins * 4 + fats * 9 + carbs * 4;
+    }
+
+    @PrePersist
+    @PreUpdate
+    private void calculateCalories() {
+        this.caloriesPerServing = getCaloriesPerServing();
+    }
 }

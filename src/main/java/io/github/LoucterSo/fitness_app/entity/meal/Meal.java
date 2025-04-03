@@ -2,6 +2,7 @@ package io.github.LoucterSo.fitness_app.entity.meal;
 
 
 import io.github.LoucterSo.fitness_app.entity.dish.Dish;
+import io.github.LoucterSo.fitness_app.entity.user.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -26,7 +27,11 @@ public class Meal {
     @Column
     private String name;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    @ManyToOne
+    private User user;
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "meal")
     private List<Dish> dishes = new ArrayList<>();
 
     @Setter(AccessLevel.NONE)
