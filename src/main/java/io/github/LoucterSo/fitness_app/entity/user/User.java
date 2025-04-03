@@ -1,4 +1,4 @@
-package io.github.LoucterSo.fitness_app.entity;
+package io.github.LoucterSo.fitness_app.entity.user;
 
 import io.github.LoucterSo.fitness_app.Util;
 import jakarta.persistence.*;
