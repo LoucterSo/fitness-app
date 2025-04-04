@@ -24,7 +24,7 @@
 ### Reports
 - 📊 Daily report (meals and total calories)
 - ✅ Check if within daily calorie target
-- 🗓️ Nutrition history by day
+- 🗓️ Meal history by day
 
 ## 🛠 Tech Stack
 | Category       | Technologies                          |
@@ -113,6 +113,7 @@ spring.profiles.active=local
 ```bash
 docker-compose -f docker-compose-dev.yml up --build
 ```
+
 ### 3. Production mode:
 *Do not forget to add the .env file with the necessary properties to the root of the project*
 ```bash
