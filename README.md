@@ -14,24 +14,22 @@
 
 ## 🌟 Key Features
 ### User Management:
-- ✅ Registration and authentication (JWT)
-- 🔐 Role-based access control
+- ✅ User registration with attributes
+- 🧮 Automatic daily goal specific calorie target calculation (Harris-Benedict formula)
   
-### Task Management
-- ➕ Create/edit tasks
-- ✔️ Mark tasks as completed
-- 🗑️ Delete tasks
+### Meal Tracking
+- 🍽️ Create dishes with macronutrients
+- 🕒 Add meals with list of selected dishes
 
-### Smart Notifications
-- ✉️ Welcome email
-- 🔔 Daily midnight email reminders:
-  - Summary of completed tasks
-  - Upcoming tasks
+### Reports
+- 📊 Daily report (meals and total calories)
+- ✅ Check if within daily calorie target
+- 🗓️ Nutrition history by day
 
 ## 🛠 Tech Stack
 | Category       | Technologies                          |
 |----------------|-----------------------------------|
-| **Backend**     | Java 17, Spring Boot 3, Web, Data JPA, Security, Cloud, Kafka, Scheduler, Mail|
+| **Backend**     | Java 17, Spring Boot 3, Web, Data JPA, Validation|
 | **Database**| PostgreSQL, Liquibase             |
 | **Infrastructure** | Docker, Docker Compose       |
 | **Build Tool**     | Maven|
@@ -45,73 +43,72 @@
 
 ```mermaid
 erDiagram
-    users ||--o{ roles : "has"
-    users ||--o{ tasks : "creates"
-    
+    users ||--o{ meal : "has"
+    meal ||--o{ meal_dish : "includes"
+    dish ||--o{ meal_dish : "used in"
+
     users {
         bigint user_id PK
-        varchar(255) first_name
-        varchar(255) last_name
-        varchar(255) password
+        varchar(255) name
         varchar(255) email
-        boolean enabled
-        timestamp created_time
-        timestamp updated_time
+        int age
+        float height_in_cm
+        float weight_in_kg
+        varchar(255) goal
+        varchar(255) sex
     }
-    
-    roles {
-        bigint role_id PK
+
+    meal {
+        bigint meal_id PK
         bigint user_id FK
-        varchar(255) role
-    }
-    
-    tasks {
-        bigint task_id PK
-        varchar(255) title
-        varchar(255) description
-        bigint user_id FK
-        boolean done
+        varchar(255) name
         timestamp created_time
-        timestamp updated_time
-        timestamp completion_time
+    }
+
+    dish {
+        bigint dish_id PK
+        varchar(255) name
+        int carbs
+        int fats
+        int proteins
+        int calories_per_serving
+    }
+
+    meal_dish {
+        bigint dish_id FK
+        bigint meal_id FK
     }
 ```
 
 ## ⚡ Quick Start
 1. Clone repository:
 ```bash
-git clone https://github.com/LoucterSo/multi-user-task-scheduler
-cd multi-user-task-scheduler
-```
-2. Configure environment variables in `docker-compose-dev.yml`:
-```yaml
-environment:
-  SPRING_MAIL_USERNAME: "your_email@example.com"    # Email for sending notifications
-  SPRING_MAIL_PASSWORD: "your_app_password"         # Application password (not your main account password)
-  JWT_SECRET: "your_secure_jwt_secret_here"         # Secret key for JWT tokens
-  SCHEDULER_PASSWORD: "your_plaintext_password"     # Plaintext password for scheduler
-  SCHEDULER_HASHED_PASSWORD: "your_bcrypt_hash"     # BCrypt hashed password (12 rounds) for scheduler
+git clone https://github.com/LoucterSo/fitness-app
+cd fitness-app
 ```
 
-3. Start the application:
+2. Start the application:
 ```bash
 docker-compose -f docker-compose-dev.yml up --build
 ```
-
-4. Stop the application:
+3. Stop the application:
 ```bash
-docker-compose -f docker-compose-dev.yml down
+docker-compose -f docker-compose-dev.yml down -v
 ```
 
 ## 🧪 Testing
 ```bash
-# Unit-tests in a service
+# Unit-tests
 ./mvnw test
 ```
 
 ## 🐳 Deployment
 ### 1. Local execution (without Docker):
-- application-local.yaml
+Start application with the 'local' profile and change the necessary properties in application-local.yml
+```properties
+spring.profiles.active=local
+```
+
 ### 2. Development mode:
 ```bash
 docker-compose -f docker-compose-dev.yml up --build
