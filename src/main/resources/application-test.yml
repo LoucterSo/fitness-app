@@ -3,9 +3,6 @@ spring:
     name: fitness-app
   main:
     banner-mode: 'off'
-  cloud:
-    config:
-      enabled: false
   datasource:
     url: jdbc:tc:postgresql:16-alpine:///integration-tests-db
     driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
@@ -16,3 +13,8 @@ spring:
       schema-locations: classpath:db/schema/schema.sql
   liquibase:
     enabled: false
+
+logging:
+  level:
+    org.springframework.jdbc: DEBUG
+    org.springframework.test.context.transaction: DEBUG
