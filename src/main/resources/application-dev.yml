@@ -14,10 +14,6 @@ spring:
     url: jdbc:postgresql://localhost:5432/fitness
     username: postgres
     password: 123
-#  liquibase:
-#    default-schema: public
-#    enabled: true
-#    change-log: classpath:/db/changelog/db.changelog-master.json
 
 hibernate:
   format_sql: 'true'

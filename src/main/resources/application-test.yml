@@ -13,8 +13,3 @@ spring:
       schema-locations: classpath:db/schema/schema.sql
   liquibase:
     enabled: false
-
-logging:
-  level:
-    org.springframework.jdbc: DEBUG
-    org.springframework.test.context.transaction: DEBUG

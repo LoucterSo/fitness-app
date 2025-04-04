@@ -9,7 +9,7 @@ spring:
       hibernate:
         format-sql: 'false'
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
   datasource:
     url: jdbc:postgresql://localhost:5432/backend
 #  liquibase:
