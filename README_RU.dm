@@ -43,9 +43,9 @@
 
 ```mermaid
 erDiagram
-    users ||--o{ meal : "has"
-    meal ||--o{ meal_dish : "includes"
-    dish ||--o{ meal_dish : "used in"
+    users ||--o{ meal : "имеет"
+    meal ||--o{ meal_dish : "включает в себя"
+    dish ||--o{ meal_dish : "используется в"
 
     users {
         bigint user_id PK
