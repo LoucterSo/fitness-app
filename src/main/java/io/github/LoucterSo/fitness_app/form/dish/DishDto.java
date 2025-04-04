@@ -30,6 +30,10 @@ public record DishDto(
         Integer carbs
 ) {
 
+    public DishDto(Long id, String name, Integer proteins, Integer fats, Integer carbs) {
+        this(id, name, 0, proteins, fats, carbs);
+    }
+
     public static DishDto fromEntity(Dish dish) {
         return new DishDto(
                 dish.getId(),

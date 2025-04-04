@@ -30,6 +30,10 @@ public record UserDto(
         Integer dailyCalorieNorm
 ) {
 
+    public UserDto(Long id, String name, String email, Integer age, Double weight, Double height, User.Sex sex, User.Goal goal) {
+        this(id, name, email, age, weight, height, sex, goal, 0);
+    }
+
     public static UserDto fromEntity(User user) {
         return new UserDto(
                 user.getId(),

@@ -30,7 +30,7 @@ public class User {
     @Column(nullable = false)
     private Integer age;
 
-    @Column(name = "weight_in_cm", nullable = false)
+    @Column(name = "weight_in_kg", nullable = false)
     private Double weightInKg;
 
     @Column(name = "height_in_cm", nullable = false)
