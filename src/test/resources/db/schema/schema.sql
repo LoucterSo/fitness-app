@@ -5,7 +5,6 @@ CREATE TABLE IF NOT EXISTS users (
   age INTEGER NOT NULL,
   height_in_cm FLOAT(53) NOT NULL,
   weight_in_kg FLOAT(53) NOT NULL,
-  daily_calorie_norm INTEGER NOT NULL,
   goal VARCHAR(255) NOT NULL CHECK (goal IN ('WEIGHT_MAINTENANCE','WEIGHT_LOSS','BULKING')),
   sex VARCHAR(255) NOT NULL CHECK (sex IN ('MAN','WOMAN'))
 );

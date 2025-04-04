@@ -40,12 +40,4 @@ public class GlobalExceptionHandler {
 
         return new ValidationErrorResponse(errors, System.currentTimeMillis());
     }
-
-    @ResponseBody
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler
-    public ErrorResponse handleInvalidRequest(IllegalArgumentException ex) {
-
-        return new ErrorResponse(ex.getMessage(), System.currentTimeMillis());
-    }
 }

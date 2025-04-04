@@ -37,7 +37,7 @@ public class MealIntegrationTest {
         jdbcTemplate.execute("truncate table users, meal, meal_dish, dish restart identity cascade");
 
         jdbcTemplate.execute(
-                "insert into users (name, email, age, height_in_cm, weight_in_cm, goal, sex) "
+                "insert into users (name, email, age, height_in_cm, weight_in_kg, goal, sex) "
                         + "values ('name', 'test@gmail.com', 21, 175.3, 65.3, 'WEIGHT_LOSS', 'MAN')");
 
         jdbcTemplate.execute(

@@ -37,9 +37,9 @@ public class ReportIntegrationTest {
         jdbcTemplate.execute("truncate table users, meal, meal_dish, dish restart identity cascade");
 
         jdbcTemplate.update(
-                "INSERT INTO users (user_id, name, email, age, height_in_cm, weight_in_kg, goal, sex, daily_calorie_norm) " +
-                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                USER_ID, "Test User", "test@email.com", 30, 175.0, 70.0, "WEIGHT_LOSS", "MAN", 1402
+                "INSERT INTO users (user_id, name, email, age, height_in_cm, weight_in_kg, goal, sex) " +
+                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                USER_ID, "Test User", "test@email.com", 30, 175.0, 70.0, "WEIGHT_LOSS", "MAN"
         );
 
         jdbcTemplate.update(
