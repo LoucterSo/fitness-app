@@ -9,11 +9,14 @@ spring:
       hibernate:
         format-sql: 'true'
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: validate
   datasource:
-    url: jdbc:postgresql://localhost:5432/fitness
-    username: postgres
-    password: 123
+    url: jdbc:postgresql://postgres:5432/backend
+
+  liquibase:
+    default-schema: public
+    enabled: true
+    change-log: classpath:/db/changelog/db.changelog-master.json
 
 hibernate:
   format_sql: 'true'

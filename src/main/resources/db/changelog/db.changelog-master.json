@@ -1,0 +1,11 @@
+{
+  "databaseChangeLog": [
+    {
+      "comment": "Initial tables creation",
+      "include": {
+        "file": "changes/001-create-tables.xml",
+        "relativeToChangelogFile": "true"
+      }
+    }
+  ]
+}
