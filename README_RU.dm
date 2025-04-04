@@ -14,24 +14,22 @@
 
 ## 🌟 Основные функции
 ### Работа с пользователями:
-- ✅ Регистрация и авторизация (JWT)
-- 🔐 Ролевая модель доступа
+- ✅ Регистрация пользователей
+- 🧮 Автоматический расчет дневного количества калорий, основывась на цели (Формула Харриса-Бенедикта)
   
-### Работа с задачами
-- ➕ Создание/редактирование задач
-- ✔️ Пометка задачи как сделанной
-- 🗑️ Удаление задач
+### Отслеживание приемов пищи
+- 🍽️ Создание блюд с макронутриентами
+- 🕒 Добавления приема пищи с списком выбранных блюд
 
-### Умные оповещения по почте
-- ✉️ Приветственное письмо
-- 🔔 Напоминания каждый день в полночь:
-  - Задачи выполненные за день
-  - Задачи на будущее
+### Отчеты
+- 📊 Ежедневный отчет (приемы пищи and количество калорий)
+- ✅ Проверка, что не превысил дневную норму калорий
+- 🗓️ История приемов пищи по дням
 
 ## 🛠 Технологический стек
 | Категория       | Технологии                          |
 |----------------|-----------------------------------|
-| **Бэкенд**     | Java 17, Spring Boot 3, Web, Data JPA, Security, Cloud, Kafka, Scheduler, Mail|
+| **Бэкенд**     | Java 17, Spring Boot 3, Web, Data JPA, Validation|
 | **Базы данных**| PostgreSQL, Liquibase             |
 | **Инфраструктура** | Docker, Docker Compose       |
 | **Сборка**     | Maven|
@@ -39,85 +37,85 @@
 
 ## API Документация
 
-[![View in Postman](https://img.shields.io/badge/Postman-View_Documentation-FF6C37?logo=postman&logoColor=white)](https://documenter.getpostman.com/view/41252659/2sB2cPjk5v)
+[![View in Postman](https://img.shields.io/badge/Postman-View_Documentation-FF6C37?logo=postman&logoColor=white)](https://documenter.getpostman.com/view/41252659/2sB2cUA2yf)
 
 ## 📊 Схема базы данных
 
 ```mermaid
 erDiagram
-    users ||--o{ roles : "имеет"
-    users ||--o{ tasks : "создает"
-    
+    users ||--o{ meal : "has"
+    meal ||--o{ meal_dish : "includes"
+    dish ||--o{ meal_dish : "used in"
+
     users {
         bigint user_id PK
-        varchar(255) first_name
-        varchar(255) last_name
-        varchar(255) password
+        varchar(255) name
         varchar(255) email
-        boolean enabled
-        timestamp created_time
-        timestamp updated_time
+        int age
+        float height_in_cm
+        float weight_in_kg
+        varchar(255) goal
+        varchar(255) sex
     }
-    
-    roles {
-        bigint role_id PK
+
+    meal {
+        bigint meal_id PK
         bigint user_id FK
-        varchar(255) role
-    }
-    
-    tasks {
-        bigint task_id PK
-        varchar(255) title
-        varchar(255) description
-        bigint user_id FK
-        boolean done
+        varchar(255) name
         timestamp created_time
-        timestamp updated_time
-        timestamp completion_time
+    }
+
+    dish {
+        bigint dish_id PK
+        varchar(255) name
+        int carbs
+        int fats
+        int proteins
+        int calories_per_serving
+    }
+
+    meal_dish {
+        bigint dish_id FK
+        bigint meal_id FK
     }
 ```
 
 ## ⚡ Быстрый старт
 1. Клонируйте репозиторий:
 ```bash
-git clone https://github.com/LoucterSo/multi-user-task-scheduler
-cd multi-user-task-scheduler
+git clone https://github.com/LoucterSo/fitness-app
+cd fitness-app
 ```
-2. Настройка окружения в `docker-compose-dev.yml`:
-```yaml
-environment:
-  SPRING_MAIL_USERNAME: "your_email@example.com"    # Email для отправки уведомлений
-  SPRING_MAIL_PASSWORD: "your_app_password"         # Пароль приложения (не аккаунта!)
-  JWT_SECRET: "your_secure_jwt_secret_here"         # Секретный ключ для JWT
-  SCHEDULER_PASSWORD: "your_plaintext_password"     # Пароль для scheduler
-  SCHEDULER_HASHED_PASSWORD: "your_bcrypt_hash"     # BCrypt захешированный пароль (12 раундов хеширования) для scheduler
-```
-3. Запуск приложения:
+2. Запустите приложение:
 ```bash
 docker-compose -f docker-compose-dev.yml up --build
 ```
-4. Остановка приложения:
+3. Остановите приложение:
 ```bash
-docker-compose -f docker-compose-dev.yml down
+docker-compose -f docker-compose-dev.yml down -v
 ```
 
-## 🧪 Тестирование 
+## 🧪 Тестирование
 ```bash
-# Unit-tests в сервисе
+# Unit-tests
 ./mvnw test
 ```
 
 ## 🐳 Развертывание
-### 1. Для запуска локального запуска(без Docker):
-- application-local.yaml
+### 1. Для локального запуска(без Docker):
+Запусти приложение с 'local' профилем и измени необходимые настройки в application-local.yml
+```properties
+spring.profiles.active=local
+```
+
 ### 2. В режиме разработки:
 ```bash
-docker-compose -f docker-compose-dev.yaml up
+docker-compose -f docker-compose-dev.yml up
 ```
 ### 3. В режиме продакшена:
 *Не забудь добавить .env файл с нужными значениями в корень проекта*
 ```bash
-docker-compose -f docker-compose-prod.yaml up
+docker-compose -f docker-compose-prod.yml up
 ```
 
 ## 📧 Контакты
