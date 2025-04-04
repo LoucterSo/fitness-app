@@ -15,7 +15,7 @@ import java.util.List;
 public record MealDto(
         Long id,
         @JsonProperty("user_id")
-        @NotNull(message = "User_id cannot be empty", groups = FirstGroup.class)
+        @NotNull(message = "User_id cannot be null", groups = FirstGroup.class)
         @PositiveOrZero(message = "User_id cannot be negative", groups = SecondGroup.class)
         Long userId,
         @NotBlank(message = "Name cannot be empty", groups = FirstGroup.class)

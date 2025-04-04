@@ -8,6 +8,7 @@ import io.github.LoucterSo.fitness_app.form.meal.DailyMealData;
 import io.github.LoucterSo.fitness_app.form.meal.MealDto;
 import io.github.LoucterSo.fitness_app.form.response.DailyAnalysisReportResponse;
 import io.github.LoucterSo.fitness_app.form.response.DailySummaryReportResponse;
+import io.github.LoucterSo.fitness_app.form.response.MealHistoryResponse;
 import io.github.LoucterSo.fitness_app.repository.meal.MealRepository;
 import io.github.LoucterSo.fitness_app.service.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -15,11 +16,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -44,15 +43,17 @@ public class ReportServiceImpl implements ReportService {
 
     @Override
     @Transactional(readOnly = true)
-    public Map<LocalDate, List<MealDto>> createMealHistoryReport(Long userId) {
+    public MealHistoryResponse createMealHistoryReport(Long userId) {
         if (!userService.existsById(userId)) {
             throw new UserNotFoundException("User with id %s not found".formatted(userId));
         }
         List<MealDto> allUserMeals = mealRepository.findAllByUserId(userId).stream()
                 .map(MealDto::fromEntity)
                 .toList();
-        return allUserMeals.stream()
+
+        var mealHistory = allUserMeals.stream()
                 .collect(Collectors.groupingBy(m -> m.created().toLocalDateTime().toLocalDate()));
+        return new MealHistoryResponse(mealHistory, mealHistory.size(), "Full history");
     }
 
     private DailyMealData getDailyMealData(Long userId) {

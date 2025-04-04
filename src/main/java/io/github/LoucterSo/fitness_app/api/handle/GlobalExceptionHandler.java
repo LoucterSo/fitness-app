@@ -1,6 +1,6 @@
 package io.github.LoucterSo.fitness_app.api.handle;
 
-import com.fasterxml.jackson.core.JsonParseException;
+
 import io.github.LoucterSo.fitness_app.exception.user.UserNotFoundException;
 import io.github.LoucterSo.fitness_app.form.error.ErrorResponse;
 import io.github.LoucterSo.fitness_app.form.error.ValidationErrorResponse;
@@ -39,5 +39,13 @@ public class GlobalExceptionHandler {
                 errors.put(error.getField(), error.getDefaultMessage()));
 
         return new ValidationErrorResponse(errors, System.currentTimeMillis());
+    }
+
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler
+    public ErrorResponse handleInvalidRequest(IllegalArgumentException ex) {
+
+        return new ErrorResponse(ex.getMessage(), System.currentTimeMillis());
     }
 }

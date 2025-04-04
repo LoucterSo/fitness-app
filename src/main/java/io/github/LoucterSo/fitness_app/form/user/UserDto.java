@@ -22,7 +22,7 @@ public record UserDto(
         Double weight,
         @Min(value = 100, message = "Height cannot be less than 100 cm", groups = FirstGroup.class)
         Double height,
-        @NotNull(message = "Sex cannot be null", groups = FirstGroup.class)
+        @NotNull(message = "Sex cannot be empty", groups = FirstGroup.class)
         User.Sex sex,
         @NotNull(message = "Goal cannot be empty", groups = FirstGroup.class)
         User.Goal goal,
