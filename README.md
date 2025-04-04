@@ -14,7 +14,7 @@
 
 ## 🌟 Key Features
 ### User Management:
-- ✅ User registration with attributes
+- ✅ User registration
 - 🧮 Automatic daily goal specific calorie target calculation (Harris-Benedict formula)
   
 ### Meal Tracking
